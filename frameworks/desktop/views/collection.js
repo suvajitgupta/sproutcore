@@ -2085,8 +2085,7 @@ SC.CollectionView = SC.View.extend(
     var itemView      = this.itemViewForEvent(ev),
         content       = this.get('content'),
         contentIndex  = itemView ? itemView.get('contentIndex') : -1, 
-        info, anchor, sel, isSelected, modifierKeyPressed,
-        allowsMultipleSel = content.get('allowsMultipleSelection');
+        info, anchor, sel, isSelected, modifierKeyPressed;
         
     info = this.mouseDownInfo = {
       event:        ev,  
@@ -2109,8 +2108,6 @@ SC.CollectionView = SC.View.extend(
 
         if (isSelected) {
           this.deselect(contentIndex) ;
-        } else if (!allowsMultipleSel) {
-          this.select(contentIndex, NO) ;
         } else {
           this.select(contentIndex, YES) ;
         }
@@ -2141,7 +2138,7 @@ SC.CollectionView = SC.View.extend(
 
     // if the shiftKey was pressed, then we want to extend the selection
     // from the last selected item
-    } else if (ev.shiftKey && sel && sel.get('length') > 0 && allowsMultipleSel) {
+    } else if (ev.shiftKey && sel && sel.get('length') > 0) {
       sel = this._findSelectionExtendedByShift(sel, contentIndex);
       anchor = this._selectionAnchor ; 
       this.select(sel) ;
@@ -2155,10 +2152,6 @@ SC.CollectionView = SC.View.extend(
     // Otherwise, if selecting on mouse down,  simply select the clicked on 
     // item, adding it to the current selection if a modifier key was pressed.
     } else {
-    
-      if((ev.shiftKey || modifierKeyPressed) && !allowsMultipleSel){
-        this.select(null, false);
-      }
     
       if (this.get("selectOnMouseDown")) {
         this.select(contentIndex, modifierKeyPressed);
@@ -2179,8 +2172,7 @@ SC.CollectionView = SC.View.extend(
     var view   = this.itemViewForEvent(ev),
         info   = this.mouseDownInfo,
         content       = this.get('content'),
-        contentIndex, sel, isSelected, canEdit, itemView, idx,
-        allowsMultipleSel = content.get('allowsMultipleSelection');
+        contentIndex, sel, isSelected, canEdit, itemView, idx;
         
     if (this.get('useToggleSelection')) {
       // Return if clicked outside of elements or if toggle was handled by mouseDown
@@ -2193,8 +2185,6 @@ SC.CollectionView = SC.View.extend(
       
       if (isSelected) {
         this.deselect(contentIndex) ;
-      } else if (!allowsMultipleSel) {
-        this.select(contentIndex, NO) ;
       } else {
         this.select(contentIndex, YES) ;
       }
